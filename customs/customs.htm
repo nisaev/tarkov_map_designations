@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Карта Таможни в Таркове</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta property="og:title" content="Карта Таможни в Таркове - TarkovMap.ru">
+<meta property="og:description" content="Карта Таможни из игры Escape from Tarkov с расположением выходов Диких и ЧВК, карта ключей и заданий.">
+<meta property="og:image" content="/img/tamojnya.jpg">
+<meta name="description" content="Карта Таможни из игры Escape from Tarkov с расположением выходов Диких и ЧВК, карта ключей и заданий."> 
+<meta name="Keywords" content="карта, таможня, тарков, карта выходов, выходы за дикиго, выходы чвк, где искать ключи"> 
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+  integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+  crossorigin=""></script>
+
+<script src="js/map_hash.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+<link rel="stylesheet" href="css/main.css">
+
+
+</head>
+
+<body>
+
+
+
+<div id="map" class="js-canvi-content canvi-content leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0" style="position: relative;">
+<div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(0px, 0px, 0px);">
+<div class="leaflet-pane leaflet-tile-pane"></div>
+<div class="leaflet-pane leaflet-shadow-pane"></div>
+<div class="leaflet-pane leaflet-overlay-pane">
+
+<div class="leaflet-pane leaflet-marker-pane"></div>
+
+<div class="leaflet-pane leaflet-tooltip-pane"></div>
+<div class="leaflet-pane leaflet-popup-pane"></div>
+<div class="leaflet-proxy leaflet-zoom-animated" style="transform: translate3d(500px, -500px, 0px) scale(0.5);"></div></div>
+
+<div class="leaflet-control-container">
+<div class="leaflet-top leaflet-left">
+<div class="leaflet-control-zoom leaflet-bar leaflet-control">
+<a class="leaflet-control-zoom-in" href="#" title="Zoom in" role="button" aria-label="Zoom in">+</a>
+<a class="leaflet-control-zoom-out leaflet-disabled" href="#" title="Zoom out" role="button" aria-label="Zoom out">−</a>
+</div>
+
+<div class="leaflet-control" id="" title="" style="position: absolute; left: 45px; top: 2px; width: 300px;">
+<div class="input-group">
+
+
+
+</div>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+        
+
+
+
+<script>
+
+var places = L.layerGroup(),
+	customs = L.layerGroup();
+	var map = L.map('map', {
+		center: [67, -10],
+		zoom: 3,
+		layers: [customs]
+	});
+
+    var layer = L.tileLayer('maps/customs/{z}/{x}/{y}.png', {
+			noWrap: true,
+			tms: false
+        }).addTo(map);
+
+	map.setMaxZoom(4);
+	map.setMinZoom(2);
+	
+	var hash = new L.Hash(map);
+
+var KeyIcon = L.Icon.extend({
+    options: {
+        iconSize:     [40, 40],
+        iconAnchor:   [20, 20],
+		popupAnchor:  [0, -10]
+    }
+});	
+
+
+
+
+
+var redIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+
+//Точки интереса по заданиям
+L.marker([33.651208, 75.322266],{icon: redIcon}).addTo(places).bindPopup('снайперские камни');
+L.marker([25.720735, 57.216797],{icon: redIcon}).addTo(places).bindPopup('новая заправка');
+L.marker([43.961191, 80.244141],{icon: redIcon}).addTo(places).bindPopup('лэпка');
+L.marker([40.446947, 27.949219],{icon: redIcon}).addTo(places).bindPopup('двухсотка');
+L.marker([50.401515, 6.855469],{icon: redIcon}).addTo(places).bindPopup('двушка');
+L.marker([53.540307, -7.734375],{icon: redIcon}).addTo(places).bindPopup('трешка');
+L.marker([58.631217, 1.40625],{icon: redIcon}).addTo(places).bindPopup('платник');
+L.marker([46.800059, -8.4375],{icon: redIcon}).addTo(places).bindPopup('шаверма');
+L.marker([30.145127, 9.140625],{icon: redIcon}).addTo(places).bindPopup('гринбокс');
+L.marker([15.114553, 103.886719],{icon: redIcon}).addTo(places).bindPopup('кпп диких');
+L.marker([41.112469, -26.894531],{icon: redIcon}).addTo(places).bindPopup('сотка');
+L.marker([26.902477, -53.261719],{icon: redIcon}).addTo(places).bindPopup('магазин');
+L.marker([14.093957, -33.75],{icon: redIcon}).addTo(places).bindPopup('квадрат');
+L.marker([13.752725, -1.230469],{icon: redIcon}).addTo(places).bindPopup('скелет');
+L.marker([-16.130262, 0.878906],{icon: redIcon}).addTo(places).bindPopup('крепость');
+L.marker([-25.641526, -33.398438],{icon: redIcon}).addTo(places).bindPopup('мозайка');
+L.marker([-10.141932, -26.542969],{icon: redIcon}).addTo(places).bindPopup('гараж');
+L.marker([-0.35156, -34.101563],{icon: redIcon}).addTo(places).bindPopup('зига');
+L.marker([-16.467695, -47.109375],{icon: redIcon}).addTo(places).bindPopup('мохнатка');
+L.marker([-19.145168, -136.582031],{icon: redIcon}).addTo(places).bindPopup('гаражи таркона');
+L.marker([13.239945, -54.492187],{icon: redIcon}).addTo(places).bindPopup('кпп USECов');
+L.marker([-52.696361, -5.097656],{icon: redIcon}).addTo(places).bindPopup('гнездо');
+L.marker([-32.249974, 21.445313],{icon: redIcon}).addTo(places).bindPopup('калитка');
+L.marker([-29.840644, 32.167969],{icon: redIcon}).addTo(places).bindPopup('старая заправка');
+L.marker([-16.972741, 40.253906],{icon: redIcon}).addTo(places).bindPopup('мост у старой');
+L.marker([-20.96144, 77.519531],{icon: redIcon}).addTo(places).bindPopup('перепрыжка');
+L.marker([-3.337954, 36.386719],{icon: redIcon}).addTo(places).bindPopup('4й склад');
+L.marker([-10.314919, 52.382813],{icon: redIcon}).addTo(places).bindPopup('3й склад');
+L.marker([-1.230374, 76.464844],{icon: redIcon}).addTo(places).bindPopup('5й склад');
+L.marker([-2.899153, 101.074219],{icon: redIcon}).addTo(places).bindPopup('склад USECов');
+L.marker([-17.476432, 99.492188],{icon: redIcon}).addTo(places).bindPopup('холодный склад');
+L.marker([-18.312811, 113.554688],{icon: redIcon}).addTo(places).bindPopup('графити');
+L.marker([19.311143, -18.984375],{icon: redIcon}).addTo(places).bindPopup('огнеопасно');
+L.marker([14.093957, 43.066406],{icon: redIcon}).addTo(places).bindPopup('проходная');
+L.marker([-37.020098, -98.085938],{icon: redIcon}).addTo(places).bindPopup('поваленный вагон');
+L.marker([-41.244772, -99.316406],{icon: redIcon}).addTo(places).bindPopup('жопа поезда');
+L.marker([26.431228, -97.03125],{icon: redIcon}).addTo(places).bindPopup('голова поезда');
+L.marker([3.162456, 54.492188],{icon: redIcon}).addTo(places).bindPopup('дворик складов');
+L.marker([-24.046464, -20.039063],{icon: redIcon}).addTo(places).bindPopup('канава');
+L.marker([-39.639538, -118.125],{icon: redIcon}).addTo(places).bindPopup('трейлерный парк');
+L.marker([-3.688855, -146.777344],{icon: redIcon}).addTo(places).bindPopup('перекресток');
+L.marker([5.441022, -102.041016],{icon: redIcon}).addTo(places).bindPopup('секретка');
+L.marker([9.275622, -115.664063],{icon: redIcon}).addTo(places).bindPopup('скрипучка, синяя будка(скрипучка)');
+L.marker([-32.694866, -108.896484],{icon: redIcon}).addTo(places).bindPopup('синяя будка(трейлерка)');
+L.marker([-31.802893, -121.816406],{icon: redIcon}).addTo(places).bindPopup('контейнер-перепрыжка');
+L.marker([-31.802893, -83.320313],{icon: redIcon}).addTo(places).bindPopup('1-я перебежка');
+L.marker([5.615986, -78.925781],{icon: redIcon}).addTo(places).bindPopup('средняя перебежка');
+L.marker([28.767659, -76.289063],{icon: redIcon}).addTo(places).bindPopup('громкая перебежка');
+L.marker([-20.715015, -52.03125],{icon: redIcon}).addTo(places).bindPopup('гаражи');
+L.marker([24.367114, 33.222656],{icon: redIcon}).addTo(places).bindPopup('насыпь');
+
+
+	
+	
+	var overlays = {
+	
+		"Названия мест": places,
+		
+	};	
+	var maps = {
+		"Карта Таможни": customs
+	};
+	
+
+L.control.layers(maps, overlays, {collapsed: false}).addTo(map);
+
+var popup = L.popup();
+
+
+L.easyButton('<span class="target">&target;</span>', function(btn, map){
+    map.setView([67, -10]);
+}).addTo( map );
+
+
+
+
+
+
+map.on("click", function (event) {
+var text2 = event.latlng.toString();
+var lent=text2.length;
+var text = text2.slice(7,lent-1);
+navigator.clipboard.writeText(text).then(function() {
+  console.log('Async: Copying to clipboard was successful!');
+}, function(err) {
+  console.error('Async: Could not copy text: ', err);
+});
+
+
+   console.log(text);
+   console.log(text2);
+});
+
+
+
+
+
+</script>
+
+
+
+</body>
+</html>
+
